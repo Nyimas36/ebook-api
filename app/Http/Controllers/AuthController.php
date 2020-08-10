@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     public function me(){
-    	return "35_Nyimas Ananda Putri M_XII RPL 3";
+    	return [
+            "nama"=>"Nyimas Ananda Putri M",
+            "nis"=> "XII RPL 3",
+        ];
     }
 }
