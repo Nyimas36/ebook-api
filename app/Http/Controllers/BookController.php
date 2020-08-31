@@ -15,7 +15,13 @@ class BookController extends Controller
      */
     public function index()
     {
-        return Book::get();
+        $book = Book::all();
+        if ($book && $book->count() > 0){
+            return response(["message" => "Show data succes", "data" => $book], 200);    
+        }else{
+            return response(["message" => "Data not found", "data" => null], 404);
+        }
+        
     }
 
     
@@ -27,7 +33,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        Book::create([
+        $book = Book::create([
             "title" => $request->title,
             "description" => $request->description,
             "author" => $request->author,
@@ -35,6 +41,7 @@ class BookController extends Controller
             "date_of_issue" => $request->date_of_issue,
 
         ]);//
+        return response(["message" => "create data succes", "data" => $book], 201);    
     }
 
     /**
@@ -45,7 +52,13 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = Book::find($id > 0);
+
+        if ($book && $book->count()){
+            return response(["message" => "Show data succes", "data" => $book], 200);    
+        }else{
+            return response(["message" => "Data not found", "data" => null], 404);
+        }
     }
 
     /**
@@ -57,7 +70,19 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $book = Book::find($id);
+        if($book){
+            $book->title = $request->title;
+            $book->description = $request->description;
+            $book->author = $request->author;
+            $book->publisher = $request->publisher;
+            $book->date_of_issue = $request->date_of_issue;
+
+            $book -> save();
+
+        }
+
+        return $book;
     }
 
     /**
@@ -68,6 +93,11 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //$book = Book::find($id);
+        //if($book){
+        //   $book->delete();
+        //}
+
+        return Book::destroy($id);
     }
 }
